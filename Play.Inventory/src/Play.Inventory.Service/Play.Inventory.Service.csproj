@@ -13,8 +13,10 @@
 
   <ItemGroup>
     <None Remove="Controllers\" />
+    <None Remove="Entities\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="Entities\" />
   </ItemGroup>
 </Project>
