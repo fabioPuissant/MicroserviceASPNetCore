@@ -9,6 +9,7 @@ namespace Play.Catalog.Service.Entities
         public string Description { get; set; }
         public decimal Price { get; set; }
         public DateTimeOffset CreatedDate { get; set; }
+        public Guid Id { get; set; }
     }
 }
 
