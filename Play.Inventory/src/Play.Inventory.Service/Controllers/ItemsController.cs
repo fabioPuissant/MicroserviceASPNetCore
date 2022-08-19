@@ -1,12 +1,17 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Play.Common;
 using Play.Inventory.Service.Entities;
+using Play.Inventory.Service;
+using System;
+using System.Threading.Tasks;
+using System.Linq.Expressions;
+using System.Collections.Generic;
+
 
 namespace Play.Inventory.Service.Controllers
 {
 	[ApiController]
-	[Route("[controller]")]
+	[Route("items")]
 	public class ItemsController : ControllerBase
 	{
 		private readonly IRepository<InventoryItem> _itemRepository;
@@ -17,15 +22,19 @@ namespace Play.Inventory.Service.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<InventoryItemDto>>> GetAsync(Guid userId)
+		public async Task<ActionResult<IEnumerable<InventoryItemDto>>> GetAsync([FromQuery] Guid userId)
 		{
 			if (userId == Guid.Empty)
 			{
 				return BadRequest();
 			}
 
-			var items = (await _itemRepository.GetAllAsync(item => item.UserId == userId))
-												.Select(items => items.AsDto());
+			var items = await _itemRepository.GetAllAsync(item => item.UserId == userId);
+			var dtos = new List<InventoryItemDto>();
+			foreach (var item in items)
+			{
+				dtos.Add(item.AsDto());
+			}
 
 			return Ok(items);
 		}
