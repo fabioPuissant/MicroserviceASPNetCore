@@ -27,10 +27,10 @@ namespace Play.Common.MongoDB
 
                     // Configure connection with MongoDB
                     var serviceSettings = configuration.GetSection(nameof(ServiceSettings)).Get<ServiceSettings>(); // Get the right DB in the MongoDB
-                    Console.WriteLine($"FABIO--SERVICENAME= {serviceSettings.ServiceName}");
+                    System.Diagnostics.Debug.WriteLine($"FABIO--AddMongo::SERVICENAME= {serviceSettings.ServiceName}");
                     var mongoDbSettings = configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
                     var mongoClient = new MongoClient(mongoDbSettings.ConnectionString);
-                    Console.WriteLine($"FABIO--CONECTIONSTR= {serviceSettings.ServiceName}");
+                    System.Diagnostics.Debug.WriteLine($"FABIO--AddMongo::CONECTIONSTR= {serviceSettings.ServiceName}");
                     return mongoClient.GetDatabase(serviceSettings.ServiceName);
                 });
 

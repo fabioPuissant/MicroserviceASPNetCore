@@ -17,8 +17,10 @@ namespace Play.Common.MongoDB
         public MongoRepository(IMongoDatabase database, string collectionName)
         {
             // setup
-            Console.WriteLine($"FAAAAAAAAAAABBBBBBBBBIIIIIIOOOO- COllectionName= {collectionName}");
+            System.Diagnostics.Debug.WriteLine($"FABIO-MongoRepo:COLLECTION_NAME={collectionName}");
+          
             _dbCollection = database.GetCollection<T>(collectionName);
+
         }
 
 
