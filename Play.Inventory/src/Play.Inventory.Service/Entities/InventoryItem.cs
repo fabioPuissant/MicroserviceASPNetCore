@@ -11,6 +11,7 @@ namespace Play.Inventory.Service.Entities
         public int Quantity { get; set; }
 
         public DateTimeOffset AcquiredDate { get; set; }
+        public Guid Id { get; set; }
     }
 }
 

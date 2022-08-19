@@ -12,8 +12,6 @@ namespace Play.Catalog.Service
 {
     public class Startup
     {
-        private ServiceSettings _serviceSettings;
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -39,7 +37,7 @@ namespace Play.Catalog.Service
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Play.Catalog.Service", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Play.Inventory.Service", Version = "v1" });
             });
         }
 
@@ -50,7 +48,7 @@ namespace Play.Catalog.Service
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Play.Catalog.Service v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Play.Inventory.Service v1"));
             }
 
             app.UseHttpsRedirection();
