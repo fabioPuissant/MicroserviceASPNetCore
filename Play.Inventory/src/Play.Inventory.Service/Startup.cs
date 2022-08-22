@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Play.Common.MongoDB;
 using Play.Common.Settings;
+using Play.Inventory.Service.Clients;
 using Play.Inventory.Service.Entities;
 
 namespace Play.Catalog.Service
@@ -29,6 +30,10 @@ namespace Play.Catalog.Service
 
             // Repositories registration with the extension method
             services.AddMongoRepository<InventoryItem>("inventoryitems");
+
+            services.AddHttpClient<CatalogClient>(client => {
+                client.BaseAddress = new Uri("https://localhost:5001");
+            });
 
             services.AddControllers(options =>
             {
