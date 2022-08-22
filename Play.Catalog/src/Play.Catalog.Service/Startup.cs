@@ -12,7 +12,7 @@ namespace Play.Catalog.Service
 {
     public class Startup
     {
-        private ServiceSettings _serviceSettings;
+        //private ServiceSettings _serviceSettings;
 
         public Startup(IConfiguration configuration)
         {
@@ -31,7 +31,7 @@ namespace Play.Catalog.Service
 
             // Repositories registration with the extension method
             services.AddMongoRepository<Item>("items");
-
+            
 
             services.AddControllers(options =>
             {

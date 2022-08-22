@@ -9,9 +9,6 @@ using Play.Common.Settings;
 
 namespace Play.Common.MongoDB
 {
- 
-
-
         public static class Extensions
         {
             public static IServiceCollection AddMongo(this IServiceCollection services)
