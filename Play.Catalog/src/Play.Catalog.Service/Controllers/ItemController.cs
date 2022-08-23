@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Play.Catalog.Service.Dtos;
 using Play.Catalog.Service.Entities;
 using Play.Common;
+using MassTransit;
+using Play.Catalog.Contracts;
 
 namespace Play.Catalog.Service.Controllers
 
@@ -16,10 +18,12 @@ namespace Play.Catalog.Service.Controllers
     {
       
         private readonly IRepository<Item> _itemRepository;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public ItemsController(IRepository<Item> itemRepository)
+        public ItemsController(IRepository<Item> itemRepository, IPublishEndpoint publishEndpoint)
         {
             _itemRepository = itemRepository;
+            _publishEndpoint = publishEndpoint;
         }
 
 
@@ -57,7 +61,9 @@ namespace Play.Catalog.Service.Controllers
             };
 
             await _itemRepository.CreateAsync(item);
-
+            // Publish to message broker
+            await _publishEndpoint.Publish(new CatalogItemCreated(item.Id, item.Name, item.Description));
+            
             return CreatedAtAction(nameof(GetByIdAsync), new { id = item.Id }, item);
         }
 
@@ -76,12 +82,15 @@ namespace Play.Catalog.Service.Controllers
             existingItem.Price = dto.Price;
 
             await _itemRepository.UpdateAsync(existingItem);
+            // Publish to message broker
+            await _publishEndpoint.Publish(new CatalogItemUpdated(existingItem.Id, existingItem.Name, existingItem.Description));
+
             return NoContent();
         }
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult >DeleteItem(Guid id)
+        public async Task<IActionResult> DeleteItem(Guid id)
         {
             var existingItem = await _itemRepository.GetAsync(id);
 
@@ -91,6 +100,8 @@ namespace Play.Catalog.Service.Controllers
             }
 
             await _itemRepository.RemoveAsync(existingItem.Id);
+            // Publish to message broker
+            await _publishEndpoint.Publish(new CatalogItemDeleted(existingItem.Id));
 
             return NoContent();
         }
