@@ -2,16 +2,10 @@
 
 namespace Play.Inventory.Service.Entities
 {
-	public class InventoryItem : IEntity
+	public class CatalogItem : IEntity
 	{
-        public Guid UserId { get; set; }
-
-        public Guid CatalogItemId { get; set; }
-
-        public int Quantity { get; set; }
-
-        public DateTimeOffset AcquiredDate { get; set; }
-        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
     }
 }
 
