@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using Play.Catalog.Service.Entities;
 using Play.Common.MongoDB;
 using Play.Common.Settings;
+using Play.Common.MassTransit;
 using MassTransit;
 using System;
 
@@ -33,23 +34,8 @@ namespace Play.Catalog.Service
             // Repositories registration with the extension method
             services.AddMongoRepository<Item>("items");
             
-            // Configure RabbitMQ Message Broker
-            services.AddMassTransit( x => 
-            {
-                x.UsingRabbitMq((context, configurator) => {
-                    var rabbitMQSettings = Configuration.GetSection(nameof(RabbitMQSettings)).Get<RabbitMQSettings>();
-                    configurator.Host(rabbitMQSettings.Host); // configure where RabbitMQ Lives (is hosted --> here = localhost)
-                    configurator.ConfigureEndpoints(context, new KebabCaseEndpointNameFormatter(_serviceSettings.ServiceName, false));
-                });
-            });
-
-            // start MassTransit hosted services (starts the RabbitMQ Service message BUS)
-            services.Configure<MassTransitHostOptions>(options =>
-            {
-                options.WaitUntilStarted = true;
-                options.StartTimeout = TimeSpan.FromSeconds(30);
-                options.StopTimeout = TimeSpan.FromMinutes(1);
-            });
+            // Add MassTransit with RabbitMQ message broker
+            services.AddMassTransitWithRabbitMQ();
 
             services.AddControllers(options =>
             {

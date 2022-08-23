@@ -39,7 +39,7 @@ namespace Play.Catalog.Service.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ItemDto>> GetByIdAsync(Guid id)
         {
-            var item = await _itemRepository.GetAsync(id);
+            var item = await _itemRepository.GetByIdAsync(id);
             if (item == null)
             {
                 return NotFound();
@@ -71,7 +71,7 @@ namespace Play.Catalog.Service.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateItem(Guid id, UpdateItemDto dto)
         {
-            var existingItem = await _itemRepository.GetAsync(id);
+            var existingItem = await _itemRepository.GetByIdAsync(id);
             if (existingItem == null)
             {
                 return NotFound();
@@ -92,7 +92,7 @@ namespace Play.Catalog.Service.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteItem(Guid id)
         {
-            var existingItem = await _itemRepository.GetAsync(id);
+            var existingItem = await _itemRepository.GetByIdAsync(id);
 
             if (existingItem == null)
             {
