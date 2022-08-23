@@ -38,7 +38,7 @@ namespace Play.Catalog.Service
             services.AddHttpClient<CatalogClient>(client => {
                 client.BaseAddress = new Uri("https://localhost:5001");
             })
-                .AddTransientHttpErrorPolicy(builder => builder.Or<TimeoutRejectedException>().WaitAndRetryAsync( // prevents keep sending request (overwhelming) by backing-off policy
+                .AddTransientHttpErrorPolicy(builder => builder.Or<TimeoutRejectedException>().WaitAndRetryAsync( // retry policy: prevents keep sending request (overwhelming) by backing-off policy
                     5, // number of attempts
                     retryAttampt => TimeSpan.FromSeconds(Math.Pow(2, retryAttampt))
                                     + TimeSpan.FromMilliseconds(jitterer.Next(0, 1000)), // exponential back-off with randomness,
@@ -50,6 +50,10 @@ namespace Play.Catalog.Service
                             .LogWarning($"Delaying for {timespan.TotalSeconds} seconds, then making retry {retryAttempt}");
                     }
                 ))
+                .AddTransientHttpErrorPolicy(builder => builder.Or<TimeoutRejectedException>().CircuitBreakerAsync( // circuit breaker paatern policy
+                       3 , // open circuit after 3 failed tries
+                       TimeSpan.FromSeconds(15) // the time that the circuit is left open before next try is allowed
+                    ))
                 .AddPolicyHandler(Policy.TimeoutAsync<HttpResponseMessage>(1));
 
             services.AddControllers(options =>
