@@ -12,7 +12,7 @@ using Play.Inventory.Service.Entities;
 using Polly;
 using Polly.Timeout;
 
-namespace Play.Catalog.Service
+namespace Play.Invento.Service
 {
     public class Startup
     {

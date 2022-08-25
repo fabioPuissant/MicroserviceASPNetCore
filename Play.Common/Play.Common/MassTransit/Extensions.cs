@@ -26,6 +26,11 @@ namespace Play.Common.MassTransit
                     var rabbitMQSettings = configuration.GetSection(nameof(RabbitMQSettings)).Get<RabbitMQSettings>();
                     configurator.Host(rabbitMQSettings.Host); // configure where RabbitMQ Lives (is hosted --> here = localhost)
                     configurator.ConfigureEndpoints(context, new KebabCaseEndpointNameFormatter(serviceSettings.ServiceName, false));
+                   
+                    // retry when message consumer had an error while handling the message from the queue ==> ensuring an update is not lost when an exception in the consuming app has been thrown
+                    configurator.UseMessageRetry(retryConfigurator => {
+                        retryConfigurator.Interval(3, TimeSpan.FromSeconds(5));
+                    });
                 });
             });
 
