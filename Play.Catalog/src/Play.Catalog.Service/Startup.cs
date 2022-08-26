@@ -8,8 +8,7 @@ using Play.Catalog.Service.Entities;
 using Play.Common.MongoDB;
 using Play.Common.Settings;
 using Play.Common.MassTransit;
-using MassTransit;
-using System;
+
 
 namespace Play.Catalog.Service
 {
