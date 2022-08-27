@@ -45,14 +45,17 @@ namespace Play.Inventory.Service.Controllers
 
             #endregion
             var inventoryItemEntities = await _inventoryItemRepository.GetAllAsync(i => i.UserId == userId);
-			var itemIds = inventoryItemEntities.Select(item => item.Id);
-			var catalogItemEntities = await _catalogItemRepository.GetAllAsync(item => itemIds.Contains(item.Id));
+			var inventoryItemIds = inventoryItemEntities.Select(item => item.CatalogItemId);
+			var catalogItemEntities = await _catalogItemRepository.GetAllAsync(item => inventoryItemIds.Contains(item.Id));
+			Console.WriteLine($"############### {catalogItemEntities.Select(i => i.Name).First().ToString()} #################");
+			var inventoryItemDtos = inventoryItemEntities.Select(invItem =>
+			{
+				var catalogItem = catalogItemEntities.SingleOrDefault(catalogItem => catalogItem.Id == invItem.CatalogItemId);
+				return invItem.AsDto(catalogItem?.Name, catalogItem?.Description);
+			});
 
-			var inventoryItemDtos = inventoryItemEntities.Select(invItem => {
-				var catalogItem = catalogItemEntities.Single(catalogItem => catalogItem.Id == invItem.CatalogItemId);
-                return invItem.AsDto(catalogItem.Name, catalogItem.Description);					
-                });
-            }
+			return Ok(inventoryItemDtos);
+         }
 
 
             [HttpPost]

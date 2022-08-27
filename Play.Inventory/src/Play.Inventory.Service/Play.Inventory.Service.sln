@@ -5,6 +5,11 @@ VisualStudioVersion = 25.0.1700.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Play.Inventory.Service", "Play.Inventory.Service.csproj", "{142C6D6D-F824-4F35-B631-9B822CCB92A7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6A83C363-80AB-4180-8B0B-50F7D2E9C5C8}"
+	ProjectSection(SolutionItems) = preProject
+		Play.Inventory.Service.sln = Play.Inventory.Service.sln
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Play.Catalog.Service;
+
+using Play.Inventory.Service;
 
 namespace Play.Inventory.Service
 {
